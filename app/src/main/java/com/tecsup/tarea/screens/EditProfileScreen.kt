@@ -1,5 +1,6 @@
 package com.tecsup.tarea.screens
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,13 +14,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.tecsup.tarea.navigation.Screen
 import com.tecsup.tarea.ui.theme.PastelCeleste
 import com.tecsup.tarea.ui.theme.PastelPink
+import com.tecsup.tarea.viewmodel.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditProfileScreen(navController: NavController) {
-    var name by remember { mutableStateOf("Estudiante Estrella ✨") }
+fun EditProfileScreen(navController: NavController, authViewModel: AuthViewModel) {
+    val user by authViewModel.userState.collectAsState()
+    
+    var name by remember { mutableStateOf(user?.name ?: "Estudiante Estrella ✨") }
     var age by remember { mutableStateOf("20") }
     var institution by remember { mutableStateOf("Tecsup") }
     var bio by remember { mutableStateOf("¡Me encanta aprender cosas nuevas! 💖") }
@@ -70,6 +75,21 @@ fun EditProfileScreen(navController: NavController) {
                 colors = ButtonDefaults.buttonColors(containerColor = PastelPink)
             ) {
                 Text("Guardar cambios 💾", fontWeight = FontWeight.Bold, color = Color.White)
+            }
+
+            OutlinedButton(
+                onClick = {
+                    authViewModel.logout()
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(0)
+                    }
+                },
+                modifier = Modifier.fillMaxWidth().height(56.dp),
+                shape = RoundedCornerShape(24.dp),
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Red),
+                border = BorderStroke(1.dp, Color.Red)
+            ) {
+                Text("Cerrar Sesión 🚪", fontWeight = FontWeight.Bold)
             }
         }
     }

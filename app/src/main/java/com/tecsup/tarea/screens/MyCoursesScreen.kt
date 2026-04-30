@@ -19,8 +19,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.tecsup.tarea.models.Course
 import com.tecsup.tarea.navigation.Screen
-import com.tecsup.tarea.ui.theme.*
+import com.tecsup.tarea.ui.theme.PastelPink
+import com.tecsup.tarea.ui.theme.CuteBackground
+import com.tecsup.tarea.ui.theme.DeepPurple
+import com.tecsup.tarea.ui.theme.PastelCeleste
+import com.tecsup.tarea.ui.theme.TechBlue
+import com.tecsup.tarea.ui.theme.PastelLila
 import com.tecsup.tarea.viewmodel.CourseViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -70,7 +76,7 @@ fun MyCoursesScreen(navController: NavController, viewModel: CourseViewModel) {
 }
 
 @Composable
-fun EnrolledCourseCard(course: com.tecsup.tarea.data.local.CourseEntity) {
+fun EnrolledCourseCard(course: Course) {
     val progress = if (course.progress > 0) course.progress else 0.45f
     
     ElevatedCard(
@@ -82,7 +88,6 @@ fun EnrolledCourseCard(course: com.tecsup.tarea.data.local.CourseEntity) {
             modifier = Modifier.padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Icono de curso circular
             Surface(
                 modifier = Modifier.size(60.dp),
                 shape = CircleShape,
@@ -109,7 +114,6 @@ fun EnrolledCourseCard(course: com.tecsup.tarea.data.local.CourseEntity) {
                 
                 Spacer(modifier = Modifier.height(12.dp))
                 
-                // Barra de progreso Kawaii
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     LinearProgressIndicator(
                         progress = { progress },

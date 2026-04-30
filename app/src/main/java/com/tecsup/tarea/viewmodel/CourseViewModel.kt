@@ -1,44 +1,38 @@
 package com.tecsup.tarea.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.tecsup.tarea.data.local.CourseEntity
-import com.tecsup.tarea.data.repository.CourseRepository
+import com.tecsup.tarea.models.Course
 import com.tecsup.tarea.models.mockCourses
-import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 
-class CourseViewModel(private val repository: CourseRepository) : ViewModel() {
+class CourseViewModel : ViewModel() {
 
-    val catalogState: StateFlow<List<CourseEntity>> = repository.allCourses
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+    private val _catalogState = MutableStateFlow<List<Course>>(mockCourses)
+    val catalogState: StateFlow<List<Course>> = _catalogState
 
-    val enrolledState: StateFlow<List<CourseEntity>> = repository.enrolledCourses
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+    private val _enrolledIds = MutableStateFlow<Set<Int>>(emptySet())
+    
+    private val _enrolledState = MutableStateFlow<List<Course>>(emptyList())
+    val enrolledState: StateFlow<List<Course>> = _enrolledState
 
-    init {
-        // Pre-cargar cursos si la DB está vacía
-        viewModelScope.launch {
-            val entities = mockCourses.map { 
-                CourseEntity(
-                    title = it.title,
-                    instructor = it.instructor,
-                    category = it.category,
-                    level = it.level,
-                    duration = it.duration,
-                    description = it.description,
-                    progress = it.progress
-                )
-            }
-            repository.insertInitialCourses(entities)
+    fun enroll(courseId: Int) {
+        val currentEnrolled = _enrolledIds.value
+        if (!currentEnrolled.contains(courseId)) {
+            val newEnrolledIds = currentEnrolled + courseId
+            _enrolledIds.value = newEnrolledIds
+            updateLists(newEnrolledIds)
         }
     }
 
-    fun enroll(courseId: Int) {
-        viewModelScope.launch {
-            repository.enrollInCourse(courseId)
+    private fun updateLists(enrolledIds: Set<Int>) {
+        _catalogState.value = mockCourses.map { 
+            it.copy(isEnrolled = enrolledIds.contains(it.id))
         }
+        _enrolledState.value = _catalogState.value.filter { it.isEnrolled }
+    }
+    
+    fun getCourseById(id: Int): Course? {
+        return _catalogState.value.find { it.id == id }
     }
 }

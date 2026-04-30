@@ -20,15 +20,16 @@ import com.tecsup.tarea.navigation.Screen
 import com.tecsup.tarea.ui.theme.PastelCeleste
 import com.tecsup.tarea.ui.theme.PastelLila
 import com.tecsup.tarea.ui.theme.PastelPink
+import com.tecsup.tarea.viewmodel.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterScreen(navController: NavController) {
+fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel) {
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var pass by remember { mutableStateOf("") }
     var confirmPass by remember { mutableStateOf("") }
-    var errorMessage by remember { mutableStateOf<String?>(null) }
+    val errorState by authViewModel.errorState.collectAsState()
 
     Scaffold(
         topBar = {
@@ -72,18 +73,18 @@ fun RegisterScreen(navController: NavController) {
                 CuteTextField(value = pass, onValueChange = { pass = it }, label = "Contraseña", isPassword = true)
                 CuteTextField(value = confirmPass, onValueChange = { confirmPass = it }, label = "Confirma Contraseña", isPassword = true)
 
-                if (errorMessage != null) {
-                    Text(text = errorMessage!!, color = MaterialTheme.colorScheme.error)
+                if (errorState != null) {
+                    Text(text = errorState!!, color = MaterialTheme.colorScheme.error)
                 }
 
                 Button(
                     onClick = {
                         if (pass == confirmPass && pass.isNotEmpty()) {
-                            navController.navigate(Screen.Home.route) {
-                                popUpTo(Screen.Login.route) { inclusive = true }
+                            authViewModel.register(name, email, pass) {
+                                navController.navigate(Screen.Home.route) {
+                                    popUpTo(Screen.Login.route) { inclusive = true }
+                                }
                             }
-                        } else {
-                            errorMessage = "Las contraseñas no coinciden"
                         }
                     },
                     modifier = Modifier.fillMaxWidth().height(56.dp),

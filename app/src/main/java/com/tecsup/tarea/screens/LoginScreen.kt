@@ -25,11 +25,13 @@ import com.tecsup.tarea.navigation.Screen
 import com.tecsup.tarea.ui.theme.DeepNavy
 import com.tecsup.tarea.ui.theme.OceanBlue
 import com.tecsup.tarea.ui.theme.AzureSoft
+import com.tecsup.tarea.viewmodel.AuthViewModel
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    val errorState by authViewModel.errorState.collectAsState()
 
     Box(
         modifier = Modifier
@@ -109,8 +111,18 @@ fun LoginScreen(navController: NavController) {
                         )
                     )
 
+                    if (errorState != null) {
+                        Text(text = errorState!!, color = MaterialTheme.colorScheme.error)
+                    }
+
                     Button(
-                        onClick = { navController.navigate(Screen.Home.route) },
+                        onClick = { 
+                            authViewModel.login(email, password) {
+                                navController.navigate(Screen.Home.route) {
+                                    popUpTo(Screen.Login.route) { inclusive = true }
+                                }
+                            }
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp),

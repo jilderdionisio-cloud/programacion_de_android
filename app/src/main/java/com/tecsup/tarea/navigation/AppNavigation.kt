@@ -7,10 +7,11 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import androidx.navigation.navArgument
 import com.tecsup.tarea.screens.*
+import com.tecsup.tarea.viewmodel.AuthViewModel
 import com.tecsup.tarea.viewmodel.CourseViewModel
 
 @Composable
-fun AppNavigation(courseViewModel: CourseViewModel) {
+fun AppNavigation(authViewModel: AuthViewModel, courseViewModel: CourseViewModel) {
     val navController = rememberNavController()
 
     NavHost(
@@ -29,13 +30,13 @@ fun AppNavigation(courseViewModel: CourseViewModel) {
             scaleOut(animationSpec = tween(500)) + fadeOut(animationSpec = tween(500))
         }
     ) {
-        composable(Screen.Login.route) { LoginScreen(navController) }
-        composable(Screen.Register.route) { RegisterScreen(navController) }
+        composable(Screen.Login.route) { LoginScreen(navController, authViewModel) }
+        composable(Screen.Register.route) { RegisterScreen(navController, authViewModel) }
         composable(Screen.Home.route) { HomeScreen(navController) }
         composable(Screen.Courses.route) { CoursesScreen(navController, courseViewModel) }
         composable(Screen.MyCourses.route) { MyCoursesScreen(navController, courseViewModel) }
-        composable(Screen.Profile.route) { ProfileScreen(navController) }
-        composable(Screen.ProfileEdit.route) { EditProfileScreen(navController) }
+        composable(Screen.Profile.route) { ProfileScreen(navController, authViewModel) }
+        composable(Screen.ProfileEdit.route) { EditProfileScreen(navController, authViewModel) }
 
         composable(
             route = Screen.CourseDetail.route,

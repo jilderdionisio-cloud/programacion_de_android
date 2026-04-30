@@ -14,7 +14,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.tecsup.tarea.navigation.Screen
-import com.tecsup.tarea.ui.theme.PastelCeleste
 import com.tecsup.tarea.ui.theme.PastelLila
 import com.tecsup.tarea.ui.theme.PastelPink
 import com.tecsup.tarea.viewmodel.CourseViewModel

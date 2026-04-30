@@ -10,6 +10,8 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,10 +24,13 @@ import com.tecsup.tarea.ui.theme.DeepNavy
 import com.tecsup.tarea.ui.theme.OceanBlue
 import com.tecsup.tarea.ui.theme.MintTech
 import com.tecsup.tarea.ui.theme.AzureSoft
+import com.tecsup.tarea.viewmodel.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(navController: NavController) {
+fun ProfileScreen(navController: NavController, authViewModel: AuthViewModel) {
+    val user by authViewModel.userState.collectAsState()
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -52,7 +57,6 @@ fun ProfileScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            // Card de Perfil Profesional
             ElevatedCard(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(24.dp),
@@ -74,13 +78,13 @@ fun ProfileScreen(navController: NavController) {
                     }
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = "Usuario Tecsup",
+                        text = user?.name ?: "Usuario Tecsup",
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.ExtraBold,
                         color = DeepNavy
                     )
                     Text(
-                        text = "ID: 2024-STUDENT",
+                        text = user?.email ?: "ID: 2024-STUDENT",
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color.Gray
                     )
@@ -99,7 +103,6 @@ fun ProfileScreen(navController: NavController) {
                 }
             }
 
-            // Secciones Industriales
             TechProfileCard(
                 title = "Directorio de Alumnos",
                 icon = Icons.Default.Groups,

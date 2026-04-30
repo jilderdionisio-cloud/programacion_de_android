@@ -8,7 +8,8 @@ data class Course(
     val level: String,
     val duration: String,
     val description: String,
-    val progress: Float = 0f
+    val progress: Float = 0f,
+    val isEnrolled: Boolean = false
 )
 
 val mockCourses = listOf(

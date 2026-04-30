@@ -10,7 +10,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,9 +19,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.tecsup.tarea.data.local.CourseEntity
+import com.tecsup.tarea.models.Course
 import com.tecsup.tarea.navigation.Screen
-import com.tecsup.tarea.ui.theme.*
+import com.tecsup.tarea.ui.theme.PastelPink
+import com.tecsup.tarea.ui.theme.PastelLila
+import com.tecsup.tarea.ui.theme.PastelCeleste
+import com.tecsup.tarea.ui.theme.DeepPurple
 import com.tecsup.tarea.viewmodel.CourseViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -79,7 +81,7 @@ fun CoursesScreen(navController: NavController, viewModel: CourseViewModel) {
 }
 
 @Composable
-fun CuteCourseCard(course: CourseEntity, onClick: () -> Unit) {
+fun CuteCourseCard(course: Course, onClick: () -> Unit) {
     ElevatedCard(
         modifier = Modifier.fillMaxWidth().clickable(onClick = onClick),
         shape = RoundedCornerShape(32.dp),
