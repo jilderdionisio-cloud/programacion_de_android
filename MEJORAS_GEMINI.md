@@ -60,25 +60,7 @@
 > - Después del registro, el usuario debe ingresar automáticamente al Home.
 > - Usa Material 3, tarjetas modernas, colores tecnológicos (azul, blanco, acentos).
 
-### ✅ Prompt 2 — Base de datos + actualización automática
-> Actúa como un desarrollador Android senior experto en arquitectura MVVM y bases de datos con Room.
->
-> Necesito que implementes una base de datos local para mi app EduTech Academy.
->
-> Esto está dirigido a una aplicación en Kotlin con Jetpack Compose que tiene navegación con NavController y pantallas como Cursos, Detalle, Inscripción y Mis Cursos.
->
-> Quiero que respondas en formato de estructura de proyecto + código Kotlin.
->
-> Ten en cuenta estas condiciones:
-> - Usa Room Database.
-> - Crea Entity, DAO, Database, Repository y ViewModel.
-> - Los cursos deben almacenarse en la base de datos.
-> - Cuando el usuario se inscribe a un curso, este debe aparecer automáticamente en “Mis Cursos”.
-> - La UI debe actualizarse en tiempo real usando StateFlow o LiveData.
-> - Si se agrega un nuevo curso, debe reflejarse en el catálogo.
-> - Mantén arquitectura limpia (separación de responsabilidades).
-
-### ✅ Prompt 3 — Mejora visual + UX general (pantallas)
+### ✅ Prompt 2 — Mejora visual + UX general (pantallas)
 > Actúa como un experto en diseño UI/UX especializado en aplicaciones móviles educativas.
 >
 > Necesito que mejores el diseño visual y la experiencia de usuario de las pantallas principales de mi app EduTech Academy.
