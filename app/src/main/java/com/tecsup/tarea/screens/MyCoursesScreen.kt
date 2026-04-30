@@ -6,18 +6,17 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.tecsup.tarea.models.mockCourses
+import com.tecsup.tarea.viewmodel.CourseViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyCoursesScreen(navController: NavController) {
-    // Simulamos que el usuario está inscrito en algunos cursos
-    val enrolledCourses = mockCourses.filter { it.progress > 0 || it.id <= 2 }
+fun MyCoursesScreen(navController: NavController, viewModel: CourseViewModel) {
+    val enrolledCourses by viewModel.enrolledState.collectAsState()
 
     Scaffold(
         topBar = {
@@ -44,24 +43,32 @@ fun MyCoursesScreen(navController: NavController) {
                 )
             }
 
-            items(enrolledCourses) { course ->
-                Card(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text(text = course.title, style = MaterialTheme.typography.titleMedium)
-                        Text(text = "Instructor: ${course.instructor}", style = MaterialTheme.typography.bodySmall)
-                        Spacer(modifier = Modifier.height(12.dp))
-                        
-                        LinearProgressIndicator(
-                            progress = { if (course.progress > 0) course.progress else 0.45f },
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                        Text(
-                            text = "${((if (course.progress > 0) course.progress else 0.45f) * 100).toInt()}% completado",
-                            style = MaterialTheme.typography.bodySmall,
-                            modifier = Modifier.align(Alignment.End)
-                        )
+            if (enrolledCourses.isEmpty()) {
+                item {
+                    Box(modifier = Modifier.fillMaxWidth().padding(top = 40.dp), contentAlignment = Alignment.Center) {
+                        Text("Aún no tienes cursos inscritos", style = MaterialTheme.typography.bodyMedium)
+                    }
+                }
+            } else {
+                items(enrolledCourses) { course ->
+                    Card(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            Text(text = course.title, style = MaterialTheme.typography.titleMedium)
+                            Text(text = "Instructor: ${course.instructor}", style = MaterialTheme.typography.bodySmall)
+                            Spacer(modifier = Modifier.height(12.dp))
+                            
+                            LinearProgressIndicator(
+                                progress = { if (course.progress > 0) course.progress else 0.45f },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            Text(
+                                text = "${((if (course.progress > 0) course.progress else 0.45f) * 100).toInt()}% completado",
+                                style = MaterialTheme.typography.bodySmall,
+                                modifier = Modifier.align(Alignment.End)
+                            )
+                        }
                     }
                 }
             }

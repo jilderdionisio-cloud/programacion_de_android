@@ -4,19 +4,20 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.tecsup.tarea.models.mockCourses
 import com.tecsup.tarea.navigation.Screen
+import com.tecsup.tarea.viewmodel.CourseViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EnrollmentScreen(navController: NavController, courseId: Int) {
-    val course = mockCourses.find { it.id == courseId } ?: return
+fun EnrollmentScreen(navController: NavController, viewModel: CourseViewModel, courseId: Int) {
+    val courses by viewModel.catalogState.collectAsState()
+    val course = courses.find { it.id == courseId } ?: return
 
     var dni by remember { mutableStateOf("") }
     var name by remember { mutableStateOf("") }
@@ -29,7 +30,7 @@ fun EnrollmentScreen(navController: NavController, courseId: Int) {
                 title = { Text("Inscripción al Curso") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Atrás")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Atrás")
                     }
                 }
             )
@@ -86,7 +87,7 @@ fun EnrollmentScreen(navController: NavController, courseId: Int) {
 
             Button(
                 onClick = { 
-                    // Aquí iría la lógica de registro
+                    viewModel.enroll(courseId)
                     navController.navigate(Screen.MyCourses.route) {
                         popUpTo(Screen.Courses.route) { inclusive = false }
                     }

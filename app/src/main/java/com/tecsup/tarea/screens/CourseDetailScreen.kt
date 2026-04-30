@@ -6,17 +6,18 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.tecsup.tarea.models.mockCourses
 import com.tecsup.tarea.navigation.Screen
+import com.tecsup.tarea.viewmodel.CourseViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CourseDetailScreen(navController: NavController, courseId: Int) {
-    val course = mockCourses.find { it.id == courseId } ?: return
+fun CourseDetailScreen(navController: NavController, viewModel: CourseViewModel, courseId: Int) {
+    val courses by viewModel.catalogState.collectAsState()
+    val course = courses.find { it.id == courseId } ?: return
 
     Scaffold(
         topBar = {
@@ -74,9 +75,10 @@ fun CourseDetailScreen(navController: NavController, courseId: Int) {
                 onClick = { 
                     navController.navigate(Screen.Enrollment.createRoute(course.id))
                 },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                enabled = !course.isEnrolled
             ) {
-                Text("Inscribirse ahora")
+                Text(if (course.isEnrolled) "Ya estás inscrito" else "Inscribirse ahora")
             }
         }
     }

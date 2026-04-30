@@ -5,9 +5,10 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import androidx.navigation.navArgument
 import com.tecsup.tarea.screens.*
+import com.tecsup.tarea.viewmodel.CourseViewModel
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(courseViewModel: CourseViewModel) {
     val navController = rememberNavController()
 
     NavHost(
@@ -27,11 +28,11 @@ fun AppNavigation() {
         }
 
         composable(Screen.Courses.route) {
-            CoursesScreen(navController)
+            CoursesScreen(navController, courseViewModel)
         }
 
         composable(Screen.MyCourses.route) {
-            MyCoursesScreen(navController)
+            MyCoursesScreen(navController, courseViewModel)
         }
 
         composable(Screen.Profile.route) {
@@ -43,7 +44,7 @@ fun AppNavigation() {
             arguments = listOf(navArgument("courseId") { type = NavType.IntType })
         ) { backStackEntry ->
             val courseId = backStackEntry.arguments?.getInt("courseId") ?: 0
-            CourseDetailScreen(navController, courseId)
+            CourseDetailScreen(navController, courseViewModel, courseId)
         }
 
         composable(
@@ -51,7 +52,7 @@ fun AppNavigation() {
             arguments = listOf(navArgument("courseId") { type = NavType.IntType })
         ) { backStackEntry ->
             val courseId = backStackEntry.arguments?.getInt("courseId") ?: 0
-            EnrollmentScreen(navController, courseId)
+            EnrollmentScreen(navController, courseViewModel, courseId)
         }
     }
 }

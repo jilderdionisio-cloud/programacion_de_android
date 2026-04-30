@@ -12,19 +12,21 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.tecsup.tarea.models.mockCourses
 import com.tecsup.tarea.navigation.Screen
+import com.tecsup.tarea.viewmodel.CourseViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CoursesScreen(navController: NavController) {
+fun CoursesScreen(navController: NavController, viewModel: CourseViewModel) {
     var selectedCategory by remember { mutableStateOf("Todos") }
     val categories = listOf("Todos", "Programación 💻", "Diseño 🎨", "Negocios 📈")
     
+    val courses by viewModel.catalogState.collectAsState()
+    
     val filteredCourses = if (selectedCategory == "Todos") {
-        mockCourses
+        courses
     } else {
-        mockCourses.filter { selectedCategory.contains(it.category) }
+        courses.filter { selectedCategory.contains(it.category) }
     }
 
     Scaffold(
@@ -68,7 +70,6 @@ fun CoursesScreen(navController: NavController) {
                             }
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
-                            // Simulamos una imagen con un box de color
                             Surface(
                                 modifier = Modifier.fillMaxWidth().height(150.dp),
                                 color = MaterialTheme.colorScheme.primaryContainer,
