@@ -2,40 +2,42 @@ package com.tecsup.tarea.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Save
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.tecsup.tarea.navigation.Screen
+import com.tecsup.tarea.ui.theme.DeepNavy
+import com.tecsup.tarea.ui.theme.OceanBlue
+import com.tecsup.tarea.ui.theme.MintTech
+import com.tecsup.tarea.ui.theme.AzureSoft
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(navController: NavController) {
-    // Estados para la información editable
-    var name by remember { mutableStateOf("Estudiante Tecsup") }
-    var email by remember { mutableStateOf("estudiante@tecsup.edu.pe") }
-    var age by remember { mutableStateOf("20") }
-    var institution by remember { mutableStateOf("Tecsup") }
-    var bio by remember { mutableStateOf("Apasionado por la tecnología y el desarrollo de software.") }
-
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Mi Perfil") },
+            CenterAlignedTopAppBar(
+                title = { Text("Mi Perfil Tech 🛠️", fontWeight = FontWeight.ExtraBold) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Atrás")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Atrás")
                     }
                 },
                 actions = {
-                    IconButton(onClick = { /* Lógica para guardar cambios */ }) {
-                        Icon(Icons.Default.Save, contentDescription = "Guardar")
+                    IconButton(onClick = { navController.navigate(Screen.ProfileEdit.route) }) {
+                        Icon(Icons.Default.Settings, "Configuración", tint = OceanBlue)
                     }
                 }
             )
@@ -46,76 +48,103 @@ fun ProfileScreen(navController: NavController) {
                 .padding(padding)
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(16.dp),
+                .padding(20.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            // Imagen de perfil / Icono
-            Surface(
-                modifier = Modifier.size(100.dp),
-                shape = MaterialTheme.shapes.extraLarge,
-                color = MaterialTheme.colorScheme.primaryContainer
+            // Card de Perfil Profesional
+            ElevatedCard(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(24.dp),
+                colors = CardDefaults.elevatedCardColors(containerColor = Color.White)
             ) {
-                Box(contentAlignment = Alignment.Center) {
-                    Icon(
-                        Icons.Default.Person,
-                        contentDescription = null,
-                        modifier = Modifier.size(64.dp),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+                Column(
+                    modifier = Modifier.padding(24.dp).fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Surface(
+                        modifier = Modifier.size(110.dp),
+                        shape = CircleShape,
+                        color = AzureSoft,
+                        border = androidx.compose.foundation.BorderStroke(3.dp, OceanBlue)
+                    ) {
+                        Box(contentAlignment = Alignment.Center) {
+                            Icon(Icons.Default.Engineering, null, modifier = Modifier.size(60.dp), tint = OceanBlue)
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = "Usuario Tecsup",
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = DeepNavy
                     )
+                    Text(
+                        text = "ID: 2024-STUDENT",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Gray
+                    )
+                    
+                    Spacer(modifier = Modifier.height(16.dp))
+                    
+                    Button(
+                        onClick = { navController.navigate(Screen.ProfileEdit.route) },
+                        shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = OceanBlue)
+                    ) {
+                        Icon(Icons.Default.Edit, null, modifier = Modifier.size(16.dp))
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("Editar Perfil")
+                    }
                 }
             }
 
-            Text(
-                text = "Editar Información Personal",
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.secondary
+            // Secciones Industriales
+            TechProfileCard(
+                title = "Directorio de Alumnos",
+                icon = Icons.Default.Groups,
+                color = DeepNavy,
+                emoji = "👥"
             )
 
-            OutlinedTextField(
-                value = name,
-                onValueChange = { name = it },
-                label = { Text("Nombre Completo") },
-                modifier = Modifier.fillMaxWidth()
+            TechProfileCard(
+                title = "Perfil Académico",
+                icon = Icons.Default.Assessment,
+                color = MintTech,
+                emoji = "📊"
             )
+        }
+    }
+}
 
-            OutlinedTextField(
-                value = age,
-                onValueChange = { age = it },
-                label = { Text("Edad") },
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            OutlinedTextField(
-                value = email,
-                onValueChange = { email = it },
-                label = { Text("Correo Electrónico") },
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            OutlinedTextField(
-                value = institution,
-                onValueChange = { institution = it },
-                label = { Text("Institución") },
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            OutlinedTextField(
-                value = bio,
-                onValueChange = { bio = it },
-                label = { Text("Biografía") },
-                modifier = Modifier.fillMaxWidth(),
-                minLines = 3
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Button(
-                onClick = { /* Guardar cambios y tal vez navegar atrás */ },
-                modifier = Modifier.fillMaxWidth()
+@Composable
+fun TechProfileCard(title: String, icon: ImageVector, color: Color, emoji: String) {
+    ElevatedCard(
+        modifier = Modifier.fillMaxWidth().height(100.dp),
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.elevatedCardColors(containerColor = Color.White)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxSize().padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Surface(
+                modifier = Modifier.size(50.dp),
+                shape = RoundedCornerShape(12.dp),
+                color = color.copy(alpha = 0.15f)
             ) {
-                Text("Guardar Cambios")
+                Box(contentAlignment = Alignment.Center) {
+                    Icon(icon, null, tint = color, modifier = Modifier.size(28.dp))
+                }
             }
+            Spacer(modifier = Modifier.width(16.dp))
+            Text(
+                text = "$emoji $title",
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                color = DeepNavy
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Icon(Icons.Default.ChevronRight, null, tint = Color.LightGray)
         }
     }
 }

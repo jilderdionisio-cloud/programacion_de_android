@@ -2,15 +2,23 @@ package com.tecsup.tarea.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+// Tech-Cool Palette (Masculine Cute)
+val DeepNavy = Color(0xFF1A237E)
+val OceanBlue = Color(0xFF0288D1)
+val MintTech = Color(0xFF26A69A)
+val SlateGray = Color(0xFF455A64)
+val AzureSoft = Color(0xFFE1F5FE)
+val SpaceBackground = Color(0xFFF0F4F8)
+val TechWhite = Color(0xFFFFFFFF)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
-
-// Custom Palette
-val TecsupBlue = Color(0xFF005696)
-val TecsupOrange = Color(0xFFF37021)
-val AcademyBackground = Color(0xFFF8F9FA)
+// Compatibility (mapping old names to new tech colors to avoid immediate breaks)
+val PastelPink = OceanBlue
+val PastelLila = DeepNavy
+val PastelCeleste = AzureSoft
+val CuteBackground = SpaceBackground
+val DeepPurple = DeepNavy
+val SuccessGreen = MintTech
+val TechBlue = OceanBlue
+val TechBlueDark = DeepNavy
+val TechSecondary = MintTech
+val TextDark = DeepNavy

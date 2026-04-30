@@ -2,15 +2,21 @@ package com.tecsup.tarea.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.tecsup.tarea.navigation.Screen
+import com.tecsup.tarea.ui.theme.PastelCeleste
+import com.tecsup.tarea.ui.theme.PastelLila
+import com.tecsup.tarea.ui.theme.PastelPink
 import com.tecsup.tarea.viewmodel.CourseViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -21,13 +27,11 @@ fun EnrollmentScreen(navController: NavController, viewModel: CourseViewModel, c
 
     var dni by remember { mutableStateOf("") }
     var name by remember { mutableStateOf("") }
-    var phone by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Inscripción al Curso") },
+                title = { Text("Casi listo ✨", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, "Atrás")
@@ -37,53 +41,18 @@ fun EnrollmentScreen(navController: NavController, viewModel: CourseViewModel, c
         }
     ) { padding ->
         Column(
-            modifier = Modifier
-                .padding(padding)
-                .verticalScroll(rememberScrollState())
-                .padding(16.dp),
+            modifier = Modifier.padding(padding).fillMaxSize().verticalScroll(rememberScrollState()).padding(24.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Text(
-                text = "Estás inscribiéndote en:",
-                style = MaterialTheme.typography.labelLarge
-            )
-            Text(
-                text = course.title,
-                style = MaterialTheme.typography.headlineSmall,
-                color = MaterialTheme.colorScheme.primary
-            )
+            Text(text = "¡Qué emoción! 💖", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.ExtraBold, color = PastelPink)
+            Text(text = "Te estás uniendo a: ${course.title}", style = MaterialTheme.typography.bodyLarge)
 
-            HorizontalDivider()
+            HorizontalDivider(color = PastelLila.copy(alpha = 0.3f))
 
-            OutlinedTextField(
-                value = dni,
-                onValueChange = { if (it.length <= 8) dni = it },
-                label = { Text("DNI") },
-                modifier = Modifier.fillMaxWidth()
-            )
+            CuteTextField(value = dni, onValueChange = { if (it.length <= 8) dni = it }, label = "Tu DNI")
+            CuteTextField(value = name, onValueChange = { name = it }, label = "Tu Nombre Completo")
 
-            OutlinedTextField(
-                value = name,
-                onValueChange = { name = it },
-                label = { Text("Nombre Completo") },
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            OutlinedTextField(
-                value = phone,
-                onValueChange = { phone = it },
-                label = { Text("Teléfono / Celular") },
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            OutlinedTextField(
-                value = email,
-                onValueChange = { email = it },
-                label = { Text("Correo de contacto") },
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(32.dp))
 
             Button(
                 onClick = { 
@@ -92,21 +61,21 @@ fun EnrollmentScreen(navController: NavController, viewModel: CourseViewModel, c
                         popUpTo(Screen.Courses.route) { inclusive = false }
                     }
                 },
-                modifier = Modifier.fillMaxWidth(),
-                enabled = dni.isNotEmpty() && name.isNotEmpty()
+                modifier = Modifier.fillMaxWidth().height(56.dp),
+                shape = RoundedCornerShape(24.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = PastelLila),
+                enabled = dni.length >= 8 && name.isNotEmpty()
             ) {
-                Text("Confirmar Inscripción")
+                Text("¡Confirmar Inscripción! ✨", fontWeight = FontWeight.Bold)
             }
 
             OutlinedButton(
-                onClick = { 
-                    navController.navigate(Screen.Courses.route) {
-                        popUpTo(Screen.Courses.route) { inclusive = true }
-                    }
-                },
-                modifier = Modifier.fillMaxWidth()
+                onClick = { navController.popBackStack() },
+                modifier = Modifier.fillMaxWidth().height(56.dp),
+                shape = RoundedCornerShape(24.dp),
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Gray)
             ) {
-                Text("Cancelar")
+                Text("Tal vez luego 🌸")
             }
         }
     }

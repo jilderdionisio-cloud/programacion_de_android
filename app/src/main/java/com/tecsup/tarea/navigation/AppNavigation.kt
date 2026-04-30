@@ -1,5 +1,7 @@
 package com.tecsup.tarea.navigation
 
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
@@ -13,31 +15,27 @@ fun AppNavigation(courseViewModel: CourseViewModel) {
 
     NavHost(
         navController = navController,
-        startDestination = Screen.Login.route
+        startDestination = Screen.Login.route,
+        enterTransition = { 
+            scaleIn(animationSpec = tween(500)) + fadeIn(animationSpec = tween(500)) 
+        },
+        exitTransition = { 
+            scaleOut(animationSpec = tween(500)) + fadeOut(animationSpec = tween(500)) 
+        },
+        popEnterTransition = {
+            scaleIn(animationSpec = tween(500)) + fadeIn(animationSpec = tween(500))
+        },
+        popExitTransition = {
+            scaleOut(animationSpec = tween(500)) + fadeOut(animationSpec = tween(500))
+        }
     ) {
-        composable(Screen.Login.route) {
-            LoginScreen(navController)
-        }
-
-        composable(Screen.Register.route) {
-            RegisterScreen(navController)
-        }
-
-        composable(Screen.Home.route) {
-            HomeScreen(navController)
-        }
-
-        composable(Screen.Courses.route) {
-            CoursesScreen(navController, courseViewModel)
-        }
-
-        composable(Screen.MyCourses.route) {
-            MyCoursesScreen(navController, courseViewModel)
-        }
-
-        composable(Screen.Profile.route) {
-            ProfileScreen(navController)
-        }
+        composable(Screen.Login.route) { LoginScreen(navController) }
+        composable(Screen.Register.route) { RegisterScreen(navController) }
+        composable(Screen.Home.route) { HomeScreen(navController) }
+        composable(Screen.Courses.route) { CoursesScreen(navController, courseViewModel) }
+        composable(Screen.MyCourses.route) { MyCoursesScreen(navController, courseViewModel) }
+        composable(Screen.Profile.route) { ProfileScreen(navController) }
+        composable(Screen.ProfileEdit.route) { EditProfileScreen(navController) }
 
         composable(
             route = Screen.CourseDetail.route,
