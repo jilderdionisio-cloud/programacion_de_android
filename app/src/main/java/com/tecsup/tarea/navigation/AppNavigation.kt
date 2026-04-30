@@ -26,6 +26,10 @@ fun AppNavigation() {
             CoursesScreen(navController)
         }
 
+        composable(Screen.MyCourses.route) {
+            MyCoursesScreen(navController)
+        }
+
         composable(Screen.Profile.route) {
             ProfileScreen(navController)
         }
@@ -36,6 +40,14 @@ fun AppNavigation() {
         ) { backStackEntry ->
             val courseId = backStackEntry.arguments?.getInt("courseId") ?: 0
             CourseDetailScreen(navController, courseId)
+        }
+
+        composable(
+            route = Screen.Enrollment.route,
+            arguments = listOf(navArgument("courseId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val courseId = backStackEntry.arguments?.getInt("courseId") ?: 0
+            EnrollmentScreen(navController, courseId)
         }
     }
 }

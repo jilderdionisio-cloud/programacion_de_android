@@ -44,7 +44,7 @@ fun HomeScreen(navController: NavController) {
             HomeButton(
                 text = "🎯 Mis Cursos",
                 icon = Icons.Default.Favorite,
-                onClick = { navController.navigate(Screen.Profile.route) }
+                onClick = { navController.navigate(Screen.MyCourses.route) }
             )
 
             HomeButton(

@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.tecsup.tarea.models.mockCourses
+import com.tecsup.tarea.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -70,7 +71,9 @@ fun CourseDetailScreen(navController: NavController, courseId: Int) {
             Spacer(modifier = Modifier.height(32.dp))
             
             Button(
-                onClick = { /* Lógica de inscripción */ },
+                onClick = { 
+                    navController.navigate(Screen.Enrollment.createRoute(course.id))
+                },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Inscribirse ahora")
