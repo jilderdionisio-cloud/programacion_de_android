@@ -18,6 +18,10 @@ fun AppNavigation() {
             LoginScreen(navController)
         }
 
+        composable(Screen.Register.route) {
+            RegisterScreen(navController)
+        }
+
         composable(Screen.Home.route) {
             HomeScreen(navController)
         }
